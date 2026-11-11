@@ -10,6 +10,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
 from app.enums.enums import EstadoAcademico
+from sqlalchemy.orm import relationship
 
 
 class Inscripcion(Base):
@@ -39,4 +40,14 @@ class Inscripcion(Base):
     estado_academico: Mapped[EstadoAcademico | None] = mapped_column(
         Enum(EstadoAcademico),
         nullable=True
+    )
+
+    alumno = relationship(
+    "Alumno",
+    back_populates="inscripciones"
+    )
+
+    curso = relationship(
+        "Curso",
+        back_populates="inscripciones"
     )

@@ -11,6 +11,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
 from app.enums.enums import EstadoClase
+from sqlalchemy.orm import relationship
 
 
 class Clase(Base):
@@ -45,4 +46,19 @@ class Clase(Base):
     tema: Mapped[str | None] = mapped_column(
         String(200),
         nullable=True
+    )
+
+    curso = relationship(
+    "Curso",
+    back_populates="clases"
+    )
+
+    cuatrimestre = relationship(
+    "Cuatrimestre",
+    back_populates="clases"
+    )
+
+    asistencias = relationship(
+    "Asistencia",
+    back_populates="clase"
     )

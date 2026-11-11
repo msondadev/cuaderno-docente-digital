@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
+from sqlalchemy.orm import relationship
 
 
 class Cuatrimestre(Base):
@@ -36,4 +37,14 @@ class Cuatrimestre(Base):
     fecha_fin: Mapped[date] = mapped_column(
         Date,
         nullable=False
+    )
+
+    clases = relationship(
+    "Clase",
+    back_populates="cuatrimestre"
+    )
+
+    evaluaciones = relationship(
+    "Evaluacion",
+    back_populates="cuatrimestre"
     )

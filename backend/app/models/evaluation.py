@@ -11,6 +11,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
 from app.enums.enums import TipoEvaluacion
+from sqlalchemy.orm import relationship
 
 
 class Evaluacion(Base):
@@ -50,4 +51,19 @@ class Evaluacion(Base):
     enlace_drive: Mapped[str | None] = mapped_column(
         String(255),
         nullable=True
+    )
+
+    curso = relationship(
+    "Curso",
+    back_populates="evaluaciones"
+    )
+
+    cuatrimestre = relationship(
+    "Cuatrimestre",
+    back_populates="evaluaciones"
+    )
+
+    calificaciones = relationship(
+    "Calificacion",
+    back_populates="evaluacion"
     )

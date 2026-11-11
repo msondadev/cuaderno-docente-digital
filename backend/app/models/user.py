@@ -4,6 +4,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
 from app.enums.enums import RolUsuario
+from sqlalchemy.orm import relationship
 
 
 class Usuario(Base):
@@ -44,4 +45,9 @@ class Usuario(Base):
     activo: Mapped[bool] = mapped_column(
         Boolean,
         default=True
+    )
+
+    cursos = relationship(
+    "Curso",
+    back_populates="docente"
     )

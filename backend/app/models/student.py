@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
+from sqlalchemy.orm import relationship
 
 
 class Alumno(Base):
@@ -29,4 +30,19 @@ class Alumno(Base):
     email: Mapped[str | None] = mapped_column(
         String(150),
         nullable=True
+    )
+
+    inscripciones = relationship(
+    "Inscripcion",
+    back_populates="alumno"
+    )
+
+    asistencias = relationship(
+    "Asistencia",
+    back_populates="alumno"
+    )
+
+    calificaciones = relationship(
+    "Calificacion",
+    back_populates="alumno"
     )

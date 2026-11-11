@@ -9,6 +9,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
 from app.enums.enums import RegimenCurso
+from sqlalchemy.orm import relationship
 
 
 class Curso(Base):
@@ -58,4 +59,24 @@ class Curso(Base):
     id_docente: Mapped[int] = mapped_column(
         ForeignKey("usuarios.id_usuario"),
         nullable=False
+    )
+
+    docente = relationship(
+    "Usuario",
+    back_populates="cursos"
+    )
+
+    inscripciones = relationship(
+    "Inscripcion",
+    back_populates="curso"
+    )
+
+    clases = relationship(
+    "Clase",
+    back_populates="curso"
+    )
+
+    evaluaciones = relationship(
+    "Evaluacion",
+    back_populates="curso"
     )

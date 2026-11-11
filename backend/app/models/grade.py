@@ -9,7 +9,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.db.base import Base
 from app.enums.enums import EstadoTP
-
+from sqlalchemy.orm import relationship
 
 class Calificacion(Base):
     __tablename__ = "calificaciones"
@@ -43,4 +43,14 @@ class Calificacion(Base):
     valoracion: Mapped[str | None] = mapped_column(
         Text,
         nullable=True
+    )
+
+    evaluacion = relationship(
+    "Evaluacion",
+    back_populates="calificaciones"
+    )
+
+    alumno = relationship(
+        "Alumno",
+        back_populates="calificaciones"
     )
