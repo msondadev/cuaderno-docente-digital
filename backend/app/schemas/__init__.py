@@ -13,3 +13,7 @@ from app.schemas.student import StudentUpdate
 from app.schemas.inscription import InscriptionCreate
 from app.schemas.inscription import InscriptionUpdate
 from app.schemas.inscription import InscriptionResponse
+
+from app.schemas.quarter import QuarterCreate
+from app.schemas.quarter import QuarterUpdate
+from app.schemas.quarter import QuarterResponse
