@@ -9,3 +9,7 @@ from app.schemas.student import StudentResponse
 
 from app.schemas.course import CourseUpdate
 from app.schemas.student import StudentUpdate
+
+from app.schemas.inscription import InscriptionCreate
+from app.schemas.inscription import InscriptionUpdate
+from app.schemas.inscription import InscriptionResponse

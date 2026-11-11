@@ -4,6 +4,7 @@ from app.models import *
 from app.api.routers.users import router as users_router
 from app.api.routers.courses import router as courses_router
 from app.api.routers.students import router as students_router
+from app.api.routers.inscriptions import router as inscriptions_router
 
 app = FastAPI(
     title="Cuaderno Docente Digital",
@@ -13,6 +14,7 @@ app = FastAPI(
 app.include_router(users_router)
 app.include_router(courses_router)
 app.include_router(students_router)
+app.include_router(inscriptions_router)
 
 
 @app.get("/")
