@@ -15,6 +15,14 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserUpdate(BaseModel):
+    nombre: str
+    apellido: str
+    email: EmailStr
+    rol: RolUsuario
+    activo: bool
+
+
 class UserResponse(UserBase):
     id_usuario: int
     activo: bool
