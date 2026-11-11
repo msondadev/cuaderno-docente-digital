@@ -16,6 +16,8 @@ class CourseBase(BaseModel):
 class CourseCreate(CourseBase):
     id_docente: int
 
+class CourseUpdate(CourseBase):
+    id_docente: int
 
 class CourseResponse(CourseBase):
     id_curso: int
