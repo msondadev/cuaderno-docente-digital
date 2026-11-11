@@ -12,6 +12,10 @@ class StudentCreate(StudentBase):
     pass
 
 
+class StudentUpdate(StudentBase):
+    pass
+
+
 class StudentResponse(StudentBase):
     id_alumno: int
 

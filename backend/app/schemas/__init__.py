@@ -8,3 +8,4 @@ from app.schemas.student import StudentCreate
 from app.schemas.student import StudentResponse
 
 from app.schemas.course import CourseUpdate
+from app.schemas.student import StudentUpdate
