@@ -30,3 +30,6 @@ from app.schemas.attendance_summary import (
     AttendanceSummaryResponse
 )
 
+from app.schemas.evaluation import EvaluationCreate
+from app.schemas.evaluation import EvaluationUpdate
+from app.schemas.evaluation import EvaluationResponse
