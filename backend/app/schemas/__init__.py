@@ -45,3 +45,7 @@ from app.schemas.grades_summary import (
 from app.schemas.academic_status import (
     AcademicStatusResponse
 )
+
+from app.schemas.course_statistics import (
+    CourseStatisticsResponse
+)

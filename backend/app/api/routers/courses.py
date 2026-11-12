@@ -22,6 +22,18 @@ from app.schemas.course import (
 
 from app.models.user import Usuario
 
+
+from app.models.inscription import Inscripcion
+from app.models.attendance import Asistencia
+from app.models.classroom import Clase
+from app.models.grade import Calificacion
+from app.models.evaluation import Evaluacion
+
+from app.schemas.course_statistics import (
+    CourseStatisticsResponse
+)
+
+
 router = APIRouter(
     prefix="/courses",
     tags=["Courses"]
@@ -164,4 +176,93 @@ def delete_course(
 
     return {
         "message": "Curso eliminado"
+    }
+
+
+@router.get(
+    "/{course_id}/statistics",
+    response_model=CourseStatisticsResponse
+)
+def get_course_statistics(
+    course_id: int,
+    db: Session = Depends(get_db)
+):
+    curso = db.query(Curso).filter(
+        Curso.id_curso == course_id
+    ).first()
+
+    if not curso:
+        raise HTTPException(
+            status_code=404,
+            detail="Curso no encontrado"
+        )
+
+    inscripciones = (
+        db.query(Inscripcion)
+        .filter(
+            Inscripcion.id_curso == course_id
+        )
+        .all()
+    )
+
+    cantidad_alumnos = len(inscripciones)
+
+    calificaciones = (
+        db.query(Calificacion)
+        .join(Evaluacion)
+        .filter(
+            Evaluacion.id_curso == course_id,
+            Calificacion.nota.is_not(None)
+        )
+        .all()
+    )
+
+    if len(calificaciones) == 0:
+        promedio_curso = 0
+
+    else:
+        promedio_curso = (
+            sum(c.nota for c in calificaciones)
+            / len(calificaciones)
+        )
+
+    asistencias = (
+        db.query(Asistencia)
+        .join(Clase)
+        .filter(
+            Clase.id_curso == course_id,
+            Clase.estado == "DICTADA"
+        )
+        .all()
+    )
+
+    if len(asistencias) == 0:
+        ausentismo_promedio = 0
+
+    else:
+        faltas = 0
+
+        for asistencia in asistencias:
+
+            if asistencia.estado == "A":
+                faltas += 1
+
+            elif asistencia.estado == "T":
+                faltas += 0.5
+
+        ausentismo_promedio = (
+            faltas / len(asistencias)
+        ) * 100
+
+    return {
+        "curso_id": course_id,
+        "cantidad_alumnos": cantidad_alumnos,
+        "promedio_curso": round(
+            promedio_curso,
+            2
+        ),
+        "ausentismo_promedio": round(
+            ausentismo_promedio,
+            2
+        )
     }
