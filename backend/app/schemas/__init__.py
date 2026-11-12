@@ -17,3 +17,7 @@ from app.schemas.inscription import InscriptionResponse
 from app.schemas.quarter import QuarterCreate
 from app.schemas.quarter import QuarterUpdate
 from app.schemas.quarter import QuarterResponse
+
+from app.schemas.classroom import ClassCreate
+from app.schemas.classroom import ClassUpdate
+from app.schemas.classroom import ClassResponse
