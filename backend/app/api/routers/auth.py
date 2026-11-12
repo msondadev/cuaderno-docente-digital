@@ -45,7 +45,12 @@ def login(
             detail="Credenciales inválidas"
         )
 
+    # Devolver el id\_usuario real del docente
     return {
-        "message": "Login correcto",
-        "usuario": usuario.email
+        "message": "Login correcto", 
+        "id_usuario": usuario.id_usuario, 
+        "email": usuario.email, 
+        "nombre": usuario.nombre, 
+        "apellido": usuario.apellido, 
+        "rol": usuario.rol
     }

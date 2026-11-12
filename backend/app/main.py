@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.models import *
 from app.api.routers.users import router as users_router
 from app.api.routers.courses import router as courses_router
@@ -19,6 +19,17 @@ app = FastAPI(
     title="Cuaderno Docente Digital",
     version="0.1.0"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(users_router)
 app.include_router(courses_router)
