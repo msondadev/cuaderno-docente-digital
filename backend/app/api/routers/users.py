@@ -14,6 +14,10 @@ from fastapi import HTTPException
 
 from app.schemas.user import UserUpdate
 
+from app.core.security import (
+    hash_password
+)
+
 
 router = APIRouter(
     prefix="/users",
@@ -63,7 +67,9 @@ def create_user(
         nombre=user.nombre,
         apellido=user.apellido,
         email=user.email,
-        contrasena_hash=user.password,
+        contrasena_hash=hash_password(
+            user.password
+        ),
         rol=user.rol,
         activo=True
     )
