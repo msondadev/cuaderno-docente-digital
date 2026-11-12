@@ -49,3 +49,5 @@ from app.schemas.academic_status import (
 from app.schemas.course_statistics import (
     CourseStatisticsResponse
 )
+
+from app.schemas.auth import LoginRequest

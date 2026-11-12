@@ -10,6 +10,9 @@ from app.api.routers.classes import router as classes_router
 from app.api.routers.attendances import router as attendances_router
 from app.api.routers.evaluations import router as evaluations_router
 from app.api.routers.grades import router as grades_router
+from app.api.routers.auth import (
+    router as auth_router
+)
 
 
 app = FastAPI(
@@ -26,6 +29,8 @@ app.include_router(classes_router)
 app.include_router(attendances_router)
 app.include_router(evaluations_router)
 app.include_router(grades_router)
+app.include_router(auth_router)
+
 
 
 
