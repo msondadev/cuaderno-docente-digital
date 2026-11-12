@@ -33,3 +33,7 @@ from app.schemas.attendance_summary import (
 from app.schemas.evaluation import EvaluationCreate
 from app.schemas.evaluation import EvaluationUpdate
 from app.schemas.evaluation import EvaluationResponse
+
+from app.schemas.grade import GradeCreate
+from app.schemas.grade import GradeUpdate
+from app.schemas.grade import GradeResponse
