@@ -214,3 +214,82 @@ def get_attendance_summary(
             2
         )
     }
+
+
+@router.get(
+    "/{student_id}/courses/{course_id}/attendance-summary",
+    response_model=AttendanceSummaryResponse
+)
+def get_attendance_summary_by_course(
+    student_id: int,
+    course_id: int,
+    db: Session = Depends(get_db)
+):
+    alumno = db.query(Alumno).filter(
+        Alumno.id_alumno == student_id
+    ).first()
+
+    if not alumno:
+        raise HTTPException(
+            status_code=404,
+            detail="Alumno no encontrado"
+        )
+
+    curso = db.query(Curso).filter(
+        Curso.id_curso == course_id
+    ).first()
+
+    if not curso:
+        raise HTTPException(
+            status_code=404,
+            detail="Curso no encontrado"
+        )
+
+    asistencias = (
+        db.query(Asistencia)
+        .join(Clase)
+        .filter(
+            Asistencia.id_alumno == student_id,
+            Clase.id_curso == course_id,
+            Clase.estado == "DICTADA"
+        )
+        .all()
+    )
+
+    clases_dictadas = len(asistencias)
+
+    faltas_acumuladas = 0.0
+
+    for asistencia in asistencias:
+        if asistencia.estado == "A":
+            faltas_acumuladas += 1.0
+
+        elif asistencia.estado == "T":
+            faltas_acumuladas += 0.5
+
+    faltas_restantes = (
+        curso.max_faltas - faltas_acumuladas
+    )
+
+    if clases_dictadas == 0:
+        porcentaje_asistencia = 100
+
+    else:
+        porcentaje_asistencia = (
+            (
+                clases_dictadas -
+                faltas_acumuladas
+            )
+            / clases_dictadas
+        ) * 100
+
+    return {
+        "alumno_id": student_id,
+        "clases_dictadas": clases_dictadas,
+        "faltas_acumuladas": faltas_acumuladas,
+        "faltas_restantes": faltas_restantes,
+        "porcentaje_asistencia": round(
+            porcentaje_asistencia,
+            2
+        )
+    }
