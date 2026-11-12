@@ -21,3 +21,7 @@ from app.schemas.quarter import QuarterResponse
 from app.schemas.classroom import ClassCreate
 from app.schemas.classroom import ClassUpdate
 from app.schemas.classroom import ClassResponse
+
+from app.schemas.attendance import AttendanceCreate
+from app.schemas.attendance import AttendanceUpdate
+from app.schemas.attendance import AttendanceResponse
