@@ -25,3 +25,8 @@ from app.schemas.classroom import ClassResponse
 from app.schemas.attendance import AttendanceCreate
 from app.schemas.attendance import AttendanceUpdate
 from app.schemas.attendance import AttendanceResponse
+
+from app.schemas.attendance_summary import (
+    AttendanceSummaryResponse
+)
+
