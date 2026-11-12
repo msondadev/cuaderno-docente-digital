@@ -22,6 +22,17 @@ from app.schemas.attendance_summary import (
     AttendanceSummaryResponse
 )
 
+from app.models.grade import Calificacion
+from app.models.evaluation import Evaluacion
+
+from app.schemas.grades_summary import (
+    GradesSummaryResponse
+)
+
+from app.schemas.academic_status import (
+    AcademicStatusResponse
+)
+
 
 router = APIRouter(
     prefix="/students",
@@ -292,4 +303,131 @@ def get_attendance_summary_by_course(
             porcentaje_asistencia,
             2
         )
+    }
+
+
+@router.get(
+    "/{student_id}/courses/{course_id}/grades-summary",
+    response_model=GradesSummaryResponse
+)
+def get_grades_summary(
+    student_id: int,
+    course_id: int,
+    db: Session = Depends(get_db)
+):
+    alumno = db.query(Alumno).filter(
+        Alumno.id_alumno == student_id
+    ).first()
+
+    if not alumno:
+        raise HTTPException(
+            status_code=404,
+            detail="Alumno no encontrado"
+        )
+
+    curso = db.query(Curso).filter(
+        Curso.id_curso == course_id
+    ).first()
+
+    if not curso:
+        raise HTTPException(
+            status_code=404,
+            detail="Curso no encontrado"
+        )
+
+    calificaciones = (
+        db.query(Calificacion)
+        .join(Evaluacion)
+        .filter(
+            Calificacion.id_alumno == student_id,
+            Evaluacion.id_curso == course_id,
+            Calificacion.nota.is_not(None)
+        )
+        .all()
+    )
+
+    cantidad_evaluaciones = len(calificaciones)
+
+    if cantidad_evaluaciones == 0:
+        promedio = 0
+
+    else:
+        promedio = sum(
+            c.nota
+            for c in calificaciones
+        ) / cantidad_evaluaciones
+
+    return {
+        "alumno_id": student_id,
+        "curso_id": course_id,
+        "cantidad_evaluaciones": cantidad_evaluaciones,
+        "promedio": round(promedio, 2)
+    }
+
+
+@router.get(
+    "/{student_id}/courses/{course_id}/academic-status",
+    response_model=AcademicStatusResponse
+)
+def get_academic_status(
+    student_id: int,
+    course_id: int,
+    db: Session = Depends(get_db)
+):
+    alumno = db.query(Alumno).filter(
+        Alumno.id_alumno == student_id
+    ).first()
+
+    if not alumno:
+        raise HTTPException(
+            status_code=404,
+            detail="Alumno no encontrado"
+        )
+
+    curso = db.query(Curso).filter(
+        Curso.id_curso == course_id
+    ).first()
+
+    if not curso:
+        raise HTTPException(
+            status_code=404,
+            detail="Curso no encontrado"
+        )
+
+    calificaciones = (
+        db.query(Calificacion)
+        .join(Evaluacion)
+        .filter(
+            Calificacion.id_alumno == student_id,
+            Evaluacion.id_curso == course_id,
+            Calificacion.nota.is_not(None)
+        )
+        .all()
+    )
+
+    cantidad = len(calificaciones)
+
+    if cantidad == 0:
+        promedio = 0
+
+    else:
+        promedio = (
+            sum(c.nota for c in calificaciones)
+            / cantidad
+        )
+
+    if promedio >= 8:
+        estado = "PROMOVIDO"
+
+    elif promedio >= 6:
+        estado = "REGULAR"
+
+    else:
+        estado = "LIBRE"
+
+    return {
+        "alumno_id": student_id,
+        "curso_id": course_id,
+        "promedio": round(promedio, 2),
+        "estado": estado
     }

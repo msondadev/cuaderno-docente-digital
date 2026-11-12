@@ -11,6 +11,7 @@ from app.api.routers.attendances import router as attendances_router
 from app.api.routers.evaluations import router as evaluations_router
 from app.api.routers.grades import router as grades_router
 
+
 app = FastAPI(
     title="Cuaderno Docente Digital",
     version="0.1.0"

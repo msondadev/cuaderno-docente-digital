@@ -37,3 +37,11 @@ from app.schemas.evaluation import EvaluationResponse
 from app.schemas.grade import GradeCreate
 from app.schemas.grade import GradeUpdate
 from app.schemas.grade import GradeResponse
+
+from app.schemas.grades_summary import (
+    GradesSummaryResponse
+)
+
+from app.schemas.academic_status import (
+    AcademicStatusResponse
+)
